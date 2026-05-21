@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model PgUser {
+  id        String   @id
+  email     String
+  firstName String?
+  lastName  String?
+  createdAt DateTime @default(now())
+
+  resumes        PgResume[]
+  interviewLogs  PgInterviewLog[]
+  supportTickets PgSupportTicket[]
+
+  @@map("users")
+}
+
+model PgResume {
+  mongodbId        String   @id
+  userId           String
+  user             PgUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  atsScore         Int?
+  keywordPct       Int?
+  formattingPct    Int?
+  improvementScore Int?
+  missingSkills    String[]
+  createdAt        DateTime @default(now())
+
+  @@map("resumes")
+}
+
+model PgInterviewLog {
+  mongodbId            String    @id
+  userId               String
+  user                 PgUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interviewDate        DateTime?
+  companyName          String?
+  jobTitle             String?
+  interviewType        String?
+  outcome              String?
+  difficultyLevel      String?
+  preparationLevel     Int?
+  technicalRating      Int?
+  problemSolvingRating Int?
+  communicationRating  Int?
+  behaviouralRating    Int?
+  confidenceRating     Int?
+  nervousnessLevel     Int?
+  usedStar             Boolean?
+  explainedClearly     Boolean?
+  usedRealExamples     Boolean?
+  jobFitScore          Int?
+  performanceScore     Int?
+  overallSelfRating    Int?
+  createdAt            DateTime  @default(now())
+
+  @@map("interview_logs")
+}
+
+model PgSupportTicket {
+  mongodbId String   @id
+  userId    String?
+  user      PgUser?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email     String
+  subject   String
+  content   String
+  status    String   @default("Open")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("support_tickets")
+}
