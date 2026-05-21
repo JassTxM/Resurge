@@ -1,16 +1,20 @@
 import 'dotenv/config';
+import pg from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/index.js';
 
-const connectionString = process.env.DATABASE_URL;
+const { Pool } = pg;
 
-// Render PostgreSQL requires SSL - add sslmode if not present
-const connectionStringWithSSL = connectionString && !connectionString.includes('sslmode')
-    ? `${connectionString}?sslmode=require`
-    : connectionString;
+// Use SSL with rejectUnauthorized: false for Render's self-signed certificates
+// On localhost (no DATABASE_URL or contains 'localhost'), SSL is disabled
+const isLocalhost = !process.env.DATABASE_URL || process.env.DATABASE_URL.includes('localhost');
 
-const adapter = new PrismaPg({ connectionString: connectionStringWithSSL });
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: isLocalhost ? false : { rejectUnauthorized: false },
+});
 
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 export default prisma;
