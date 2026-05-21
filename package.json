@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npm install && pip install -r requirements.txt && npx prisma generate",
+    "build": "npm install && pip3 install -r requirements.txt && npx prisma generate",
     "test": "jest --forceExit --runInBand"
   },
   "jest": {
