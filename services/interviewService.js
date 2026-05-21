@@ -4,7 +4,7 @@ import InterviewLog from '../models/InterviewLog.js';
 
 const __dirname = path.resolve();
 
-const SCRIPT_PATH = path.join(__dirname, '..', 'python', 'interview_engine.py');
+const SCRIPT_PATH = path.join(__dirname, 'python', 'interview_engine.py');
 
 /**
  * @param {Object} interviewData — the cleaned interview form payload
@@ -16,7 +16,7 @@ const runInterviewEngine = (interviewData) => {
         let errorString = '';
 
         const jsonArg = JSON.stringify(interviewData);
-        
+
         const pythonProcess = spawn('python3', [SCRIPT_PATH, jsonArg]);
 
         pythonProcess.stdout.on('data', (data) => {

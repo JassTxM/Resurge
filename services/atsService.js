@@ -5,14 +5,14 @@ import Resume from '../models/Resume.js';
 
 const __dirname = path.resolve();
 
-const SCRIPT_PATH = path.join(__dirname, '..', 'python', 'ats_engine.py');
+const SCRIPT_PATH = path.join(__dirname, 'python', 'ats_engine.py');
 
 const runAtsEngine = (resumePath, jobDescription = '') => {
     return new Promise((resolve, reject) => {
         let dataString = '';
         let errorString = '';
-        
-       const pythonProcess = spawn('python3', [SCRIPT_PATH, resumePath, jobDescription]);
+
+        const pythonProcess = spawn('python3', [SCRIPT_PATH, resumePath, jobDescription]);
 
         pythonProcess.stdout.on('data', (data) => {
             dataString += data.toString();
