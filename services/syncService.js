@@ -21,8 +21,9 @@ const ensureUserSynced = async (userId) => {
 
 
 export const syncUser = async (doc) => {
+    console.log('[SYNC] Attempting to sync user:', doc._id?.toString(), doc.email);
     try {
-        await prisma.pgUser.upsert({
+        const result = await prisma.pgUser.upsert({
             where: { id: doc._id.toString() },
             update: {
                 email: doc.email,
@@ -36,8 +37,9 @@ export const syncUser = async (doc) => {
                 lastName: doc.lastName,
             },
         });
+        console.log('[SYNC] User synced successfully:', result.id);
     } catch (err) {
-        console.error('[SYNC] Failed to sync user:', err.message);
+        console.error('[SYNC] Failed to sync user - FULL ERROR:', err);
     }
 };
 
