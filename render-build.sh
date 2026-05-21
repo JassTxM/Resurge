@@ -18,4 +18,7 @@ python -m nltk.downloader -d ./nltk_data punkt punkt_tab stopwords || true
 echo ">>> Generating Prisma Client..."
 npx prisma generate
 
+echo ">>> Pushing Schema to PostgreSQL Database..."
+npx prisma db push
+
 echo ">>> Build completed successfully!"
