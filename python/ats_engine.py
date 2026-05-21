@@ -4,12 +4,17 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
+import os
+
+nltk_data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'nltk_data'))
+nltk.data.path.append(nltk_data_dir)
+
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 try:
-    nltk.download('punkt', quiet=True)
-    nltk.download('punkt_tab', quiet=True)
-    nltk.download('stopwords', quiet=True)
+    nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+    nltk.download('punkt_tab', download_dir=nltk_data_dir, quiet=True)
+    nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
 except Exception:
     pass
 
