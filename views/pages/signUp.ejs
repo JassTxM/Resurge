@@ -1,0 +1,100 @@
+<%- include('../partials/authHeader', { title: 'Sign Up — Resurge' , bodyClass: 'signup-page' , altAuthHref: '/logIn' ,
+    altAuthLabel: 'Log In' }) %>
+
+    <main style="padding-top:62px;">
+        <div class="auth-layout">
+
+            <div class="auth-left">
+                <div class="sb-orb sb-orb-1"></div>
+                <div class="sb-orb sb-orb-2"></div>
+                <div class="sb-inner">
+                    <div>
+                        <div class="sb-eyebrow">
+                            <div class="sb-dot"></div>Join Resurge
+                        </div>
+                        <h2 class="sb-heading">Start tracking<br>your career growth.</h2>
+                        <p class="sb-desc">Create an account to log interviews, visualize patterns, and supercharge your
+                            prep strategy with AI.</p>
+                    </div>
+                    <div>
+                        <div class="feat-list">
+                            <div class="feat-item">
+                                <div class="feat-icon"><i class="fa-solid fa-brain"></i></div><span
+                                    class="feat-text">AI-powered interview analysis</span>
+                            </div>
+                            <div class="feat-item">
+                                <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div><span
+                                    class="feat-text">Performance trends &amp; insights</span>
+                            </div>
+                            <div class="feat-item">
+                                <div class="feat-icon"><i class="fa-solid fa-file-lines"></i></div><span
+                                    class="feat-text">Resume scoring &amp; feedback</span>
+                            </div>
+                            <div class="feat-item">
+                                <div class="feat-icon"><i class="fa-solid fa-shield-halved"></i></div><span
+                                    class="feat-text">Private &amp; secure data</span>
+                            </div>
+                        </div>
+                        <p class="social-proof">Join <strong>12,000+</strong> candidates who improved their interview
+                            success rate with Resurge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-right">
+                <div class="form-panel">
+                    <h1 class="form-title">Create account.</h1>
+                    <p class="form-lead">Already have an account? <a href="/logIn">Log in instead</a></p>
+                    <form id="signupForm" action="#">
+                        <div class="fields">
+                            <div class="name-row s-in d1">
+                                <div><label class="fl-lbl" for="firstName">First name</label><input class="bare-input"
+                                        type="text" id="firstName" placeholder="First" autocomplete="given-name"></div>
+                                <div><label class="fl-lbl" for="lastName">Last name</label><input class="bare-input"
+                                        type="text" id="lastName" placeholder="Last" autocomplete="family-name"></div>
+                            </div>
+                            <div class="s-in d2">
+                                <label class="fl-lbl" for="email">Email address</label>
+                                <div class="inp-wrap"><i class="fa-solid fa-envelope ico"></i><input type="email"
+                                        id="email" placeholder="you@example.com" autocomplete="email"></div>
+                            </div>
+                            <div class="s-in d3">
+                                <label class="fl-lbl" for="password">Password</label>
+                                <div class="inp-wrap"><i class="fa-solid fa-lock ico"></i><input type="password"
+                                        id="password" placeholder="••••••••" autocomplete="new-password"
+                                        oninput="checkStrength(this.value)"></div>
+                                <div class="strength-bar">
+                                    <div class="s-seg" id="seg1"></div>
+                                    <div class="s-seg" id="seg2"></div>
+                                    <div class="s-seg" id="seg3"></div>
+                                    <div class="s-seg" id="seg4"></div>
+                                </div>
+                                <div class="strength-hint" id="sHint"></div>
+                            </div>
+                            <div class="s-in d4">
+                                <label class="fl-lbl" for="confirmPassword">Confirm password</label>
+                                <div class="inp-wrap"><i class="fa-solid fa-lock ico"></i><input type="password"
+                                        id="confirmPassword" placeholder="••••••••" autocomplete="new-password"></div>
+                            </div>
+                        </div>
+                        <button type="submit" id="signupSubmitBtn" class="btn-submit s-in d5">Create Account &nbsp;<i
+                                class="fa-solid fa-arrow-right arrow"></i></button>
+                    </form>
+                    <div class="auth-div">
+                        <hr><span>or continue with</span>
+                        <hr>
+                    </div>
+                    <a href="/api/auth/google" id="googleSignupBtn" class="btn-google"
+                        style="text-decoration: none; text-align: center; display: block; box-sizing: border-box; line-height: 1.5rem;"><i
+                            class="fa-brands fa-google g-icon"></i> Continue with Google</a>
+                    <p class="terms s-in">By signing up you agree to our <a href="/404">Terms of Service</a> and <a
+                            href="/404">Privacy Policy</a>. We'll never share your data.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="/js/signup.js"></script>
+
+    <%- include('../partials/authFooter') %>

@@ -1,0 +1,163 @@
+<%- include('../partials/mainHeader', { title: 'Resume Score — Resurge' , activePage: 'resumeScore' }) %>
+
+    <main class="snap-container" id="snap-main" style="padding-top:62px;">
+
+        <section class="snap-section rs-section-center">
+            <div class="rs-upload-container">
+                <div class="reveal-up">
+                    <div class="rsg-tag rs-tag"><span class="accent-dot"></span> ATS Optimizer</div>
+                    <h1 class="rs-upload-heading">Resume Score.</h1>
+                    <p class="rs-upload-body">Upload your data to begin the precision audit. Our engine will parse
+                        structure, extract keywords, and run ATS compatibility checks.</p>
+                </div>
+                <div class="reveal-up delay-200 rs-upload-wrap">
+                    <label for="file-upload" class="rs-upload-label">
+                        <div class="upload-zone">
+                            <input type="file" id="file-upload" accept=".pdf,.docx" hidden>
+                            <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+                            <div class="rs-upload-title">Source Credentials</div>
+                            <p id="file-status" class="rs-upload-hint">Click to upload <strong>Resume PDF</strong></p>
+                        </div>
+                    </label>
+                </div>
+                <div class="rs-continue-hint">↓ Continue</div>
+            </div>
+        </section>
+
+        <section class="snap-section rs-section-alt">
+            <div class="rs-jd-container">
+                <div class="reveal-up">
+                    <div class="rsg-tag rs-tag"><span class="accent-dot"></span> Calibration</div>
+                    <h2 class="rs-jd-heading">Target Requirements.</h2>
+                    <p class="rs-jd-body">Paste the Job Description you are targeting to measure compatibility.</p>
+                </div>
+                <div class="reveal-up delay-100 rs-jd-wrap">
+                    <label class="rsg-label rs-jd-label-wrap" for="jd-input">Job Description</label>
+                    <textarea id="jd-input" placeholder="Paste the job description here..."></textarea>
+                </div>
+                <div class="reveal-up delay-200">
+                    <button id="scan-btn" class="rsg-btn rs-scan-btn">Run Analysis Engine &nbsp;<i
+                            class="fa-solid fa-bolt rs-scan-icon"></i></button>
+                </div>
+                <div class="rs-see-results">↓ See Results</div>
+            </div>
+        </section>
+
+        <section id="results-area" class="snap-section">
+            <div class="rs-results-container">
+                <div class="rs-score-row reveal-up">
+                    <div class="score-circle"><span id="score-num">--</span><span class="rs-score-match">MATCH %</span>
+                    </div>
+                    <div class="rs-bars-col">
+                        <div>
+                            <div class="rs-bar-row"><span class="rs-bar-label"><i
+                                        class="fa-solid fa-brain rs-bar-icon-purple"></i>Keyword Logic</span><span
+                                    id="keyword-pct" class="rs-bar-pct">0%</span></div>
+                            <div class="rsg-progress-track">
+                                <div id="keyword-progress" class="rsg-progress-bar accent-blue"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="rs-bar-row"><span class="rs-bar-label"><i
+                                        class="fa-solid fa-wand-magic-sparkles rs-bar-icon-green"></i>Formatting
+                                    Audit</span><span id="formatting-pct" class="rs-bar-pct">0%</span></div>
+                            <div class="rsg-progress-track">
+                                <div id="formatting-progress" class="rsg-progress-bar accent-green"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rs-cards-grid reveal-up delay-100">
+                    <div class="result-panel">
+                        <div class="result-panel-title"><i class="fa-solid fa-tags rs-icon-blue"></i>Detected Keywords
+                        </div>
+                        <div id="keyword-chips" class="rs-keyword-chip-wrap"><span class="rs-placeholder">Waiting for
+                                engine start...</span></div>
+                    </div>
+                    <div class="result-panel rs-improvement-panel">
+                        <div class="result-panel-title rs-improvement-title"><i
+                                class="fa-solid fa-arrow-trend-up rs-icon-orange"></i>Room for Improvement</div>
+                        <div class="rs-improvement-num" id="improvement-score-num">--</div>
+                        <div class="rs-improvement-lbl">MORE NEEDED</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights-area" class="snap-section hidden rs-section-alt-plain">
+            <div class="rs-insights-container">
+                <div class="rs-insights-left">
+                    <div class="result-panel reveal-left">
+                        <div class="result-panel-title"><i class="fa-solid fa-file-pen rs-icon-purple"></i>Detailed
+                            Review</div>
+                        <div id="review-box" class="rs-review-box">Upload files to see detailed review.</div>
+                    </div>
+                    <div class="result-panel reveal-left delay-100">
+                        <div class="result-panel-title"><i
+                                class="fa-solid fa-magnifying-glass-minus rs-icon-red"></i>Missing Skills</div>
+                        <div id="missing-skills-box" class="rs-missing-wrap"><span class="rs-placeholder">Upload files
+                                to see missing requirements.</span></div>
+                    </div>
+                </div>
+                <div class="result-panel reveal-right rs-roadmap-panel">
+                    <div class="result-panel-title"><i class="fa-solid fa-route rs-icon-blue"></i>Improvement Roadmap
+                    </div>
+                    <ul id="roadmap-list" class="rs-roadmap-list">
+                        <li class="rs-placeholder">Upload files to see recommendations.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="snap-section rsg-footer rsg-footer-wrap">
+            <video autoplay muted loop playsinline class="footer-video" src="/assets/footer_animation.mp4"></video>
+            <div class="footer-content-wrap">
+                <div class="footer-grid">
+                    <div><span class="footer-brand">RESURGE</span>
+                        <p class="footer-tagline">Stop guessing. Start analyzing and visualizing your career path.</p><a
+                            href="/signUp" class="rsg-btn rsg-btn-footer">Join Now →</a>
+                    </div>
+                    <div>
+                        <div class="footer-col-label">Platform</div>
+                        <div class="footer-col-list"><a href="/resumeScore" class="footer-col-link">Resume Score</a><a
+                                href="/interviewLog" class="footer-col-link">Interview Log</a><a href="/dashboard"
+                                class="footer-col-link">Insights Dashboard</a></div>
+                    </div>
+                    <div>
+                        <div class="footer-col-label">Legal</div>
+                        <div class="footer-col-list"><a href="/404" class="footer-col-link">Privacy Policy</a><a href="/404"
+                                class="footer-col-link">Terms Of Use</a><a href="/404" class="footer-col-link">Cookie
+                                Settings</a></div>
+                    </div>
+                    <div>
+                        <div class="footer-col-label">Connect</div>
+                        <div class="footer-col-list"><a href="/404" class="footer-col-link"><i
+                                    class="fa-brands fa-github"></i> &nbsp;GitHub</a><a href="/404"
+                                class="footer-col-link"><i class="fa-brands fa-linkedin"></i> &nbsp;LinkedIn</a><a
+                                href="/404" class="footer-col-link"><i class="fa-brands fa-x-twitter"></i>
+                                &nbsp;Twitter</a></div>
+                    </div>
+                </div>
+                <div class="footer-marquee-strip">
+                    <div class="footer-marquee-track"><span class="footer-marquee-word">ANALYZE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">VISUALIZE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">RESURGE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">IMPROVE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">TRACK</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">GROW</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">ANALYZE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">VISUALIZE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">RESURGE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">IMPROVE</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">TRACK</span><span
+                            class="footer-marquee-dot"></span><span class="footer-marquee-word">GROW</span><span
+                            class="footer-marquee-dot"></span></div>
+                </div>
+                <div class="footer-bottom-bar"><span class="footer-copy">Resurge Analytics &copy; 2026</span><span
+                        class="footer-copy-right">Built for Career Growth</span></div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="/js/resume-score.js"></script>
+    <%- include('../partials/mainFooter') %>

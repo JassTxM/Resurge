@@ -1,0 +1,53 @@
+/* ── Navbar ── */
+@media (max-width: 768px) {
+    .rsg-nav-links {
+        display: none;
+    }
+
+    .snap-section {
+        padding: 72px 20px 24px;
+    }
+
+    .rsg-nav-inner {
+        padding: 0 20px;
+    }
+}
+
+/* ── Auth pages (login / signup) ── */
+@media (max-width: 900px) {
+    .auth-left {
+        display: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .auth-right {
+        padding: 40px 24px;
+    }
+
+    .name-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Footer inner grid ── */
+@media (max-width: 900px) {
+    .rsg-footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        padding: 48px 24px;
+    }
+}
+
+@media (max-width: 540px) {
+    .rsg-footer-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px 24px;
+        text-align: center;
+    }
+}

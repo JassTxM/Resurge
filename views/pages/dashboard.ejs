@@ -1,0 +1,515 @@
+<%- include('../partials/mainHeader', { title: 'Dashboard — Resurge: Interview Analytics', activePage: 'dashboard' }) %>
+
+<style>
+  .dash-main {
+    padding: 100px 32px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── Header ── */
+  .dash-hero { margin-bottom: 48px; }
+  .dash-hero-title {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+  .dash-hero-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* ── Empty State ── */
+  .empty-state-wrapper {
+    width: 100%;
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-card);
+    padding: 64px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* floating orb animation */
+  @keyframes empty-float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-16px); }
+  }
+  /* pulsing ring under icon */
+  .empty-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+  }
+  .empty-icon-inner {
+    font-size: 6rem;
+    color: var(--text-muted);
+    opacity: 0.45;
+    position: relative;
+    z-index: 1;
+    animation: empty-float 3s ease-in-out infinite;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  .empty-state-wrapper:hover .empty-icon-inner {
+    color: var(--accent-red);
+    opacity: 1;
+  }
+  .empty-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin: 0;
+  }
+  .empty-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    text-align: center;
+    max-width: 480px;
+    margin: 0;
+  }
+  .empty-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+
+  /* ── Bento Grid ── */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+  .bento-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .bento-card:hover {
+    border-color: var(--text-primary);
+    box-shadow: 5px 5px 0 0 var(--text-primary);
+    transform: translate(-2px,-2px);
+    z-index: 2;
+  }
+
+  /* Column spans */
+  .span-3  { grid-column: span 3; }
+  .span-4  { grid-column: span 4; }
+  .span-6  { grid-column: span 6; }
+  .span-8  { grid-column: span 8; }
+  .span-12 { grid-column: span 12; }
+
+  @media (max-width: 1100px) {
+    .span-3  { grid-column: span 6; }
+    .span-4  { grid-column: span 6; }
+    .span-8  { grid-column: span 12; }
+  }
+  @media (max-width: 700px) {
+    .bento-grid { gap: 14px; }
+    .span-3,.span-4,.span-6,.span-8,.span-12 { grid-column: span 12; }
+  }
+
+  /* ── Card Header ── */
+  .bento-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+  .bento-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+  .bento-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 3px;
+    letter-spacing: -0.02em;
+  }
+  .bento-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
+  .bento-card:hover .bento-icon {
+    background: var(--kpi-color, var(--text-primary));
+    color: #fff;
+    border-color: var(--kpi-color, var(--text-primary));
+  }
+
+  /* ── KPI ── */
+  .kpi-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: auto;
+    letter-spacing: -0.04em;
+  }
+  .kpi-unit {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+  }
+  .kpi-card { min-height: 160px; }
+
+  /* ── Chart wrappers — FIXED PIXEL HEIGHTS ── */
+  .chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    flex-shrink: 0;
+  }
+
+  /* ── Soft Skills ── */
+  .soft-skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    justify-content: center;
+  }
+  .ss-item { display: flex; flex-direction: column; gap: 8px; }
+  .ss-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .ss-track {
+    width: 100%;
+    height: 7px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+  .ss-fill {
+    height: 100%;
+    transition: width 1.5s cubic-bezier(0.2,0.8,0.2,1);
+  }
+
+  /* ── Tables ── */
+  .table-responsive { overflow-x: auto; }
+  .bento-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.83rem;
+  }
+  .bento-table th {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1.5px solid var(--border-color);
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+  }
+  .bento-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    vertical-align: middle;
+  }
+  .bento-table tr:last-child td { border-bottom: none; }
+  .bento-table tbody tr { transition: background 0.15s; }
+  .bento-table tbody tr:hover { background: var(--bg-secondary); }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border: 1px solid;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .badge-success { background: rgba(0,204,68,0.1);  color: var(--accent-green);  border-color: var(--accent-green); }
+  .badge-warning { background: rgba(255,208,0,0.12); color: #9a7c00;              border-color: #ccaa00; }
+  .badge-danger  { background: rgba(232,0,13,0.1);  color: var(--accent-red);    border-color: var(--accent-red); }
+  .badge-info    { background: rgba(0,80,255,0.08); color: var(--accent-blue);   border-color: var(--accent-blue); }
+
+  /* ── Rate bar ── */
+  .rate-wrap { display:flex; align-items:center; gap:10px; }
+  .rate-track { flex:1; height:5px; background:var(--bg-secondary); border:1px solid var(--border-color); }
+  .rate-fill  { height:100%; background:var(--text-primary); }
+</style>
+
+<main class="dash-main">
+
+  <div class="dash-hero reveal-up">
+    <div class="rsg-tag" style="margin-bottom:16px;"><span class="accent-dot"></span> Analytics Dashboard</div>
+    <h1 class="dash-hero-title">Your Data.</h1>
+    <p class="dash-hero-subtitle">Track your progress, identify patterns, and refine your strategy with a comprehensive view of your interview journey.</p>
+  </div>
+
+  <% if (!dashData || (dashData.kpi.totalInterviews === 0 && dashData.kpi.latestAtsScore === null)) { %>
+    <div class="empty-state-wrapper reveal-up delay-100">
+      <!-- centred content -->
+      <div class="empty-icon-wrap">
+        <span class="empty-icon-inner"><i class="fa-solid fa-ghost"></i></span>
+      </div>
+      <h2 class="empty-title">No data yet.</h2>
+      <p class="empty-desc">Log interviews and score your resume to start seeing your analytics here.</p>
+      <div class="empty-actions">
+        <a href="/interviewLog" class="rsg-btn">Log Interview →</a>
+        <a href="/resumeScore" class="rsg-btn rsg-btn-outline">Score Resume →</a>
+      </div>
+    </div>
+  <% } else { %>
+
+  <div class="bento-grid reveal-up delay-100">
+
+    <!-- ── ROW 1: KPIs — 4 × span-3 = 12 ── -->
+    <div class="bento-card span-3 kpi-card" style="--kpi-color:var(--accent-blue)">
+      <div class="bento-header">
+        <div><div class="bento-label">Overview</div><div class="bento-title">Total Logs</div></div>
+        <div class="bento-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+      </div>
+      <div class="kpi-value"><%= dashData.kpi.totalInterviews %></div>
+    </div>
+
+    <div class="bento-card span-3 kpi-card" style="--kpi-color:var(--accent-green)">
+      <div class="bento-header">
+        <div><div class="bento-label">Performance</div><div class="bento-title">Success Rate</div></div>
+        <div class="bento-icon"><i class="fa-solid fa-trophy"></i></div>
+      </div>
+      <div class="kpi-value"><%= dashData.kpi.successRate %><span class="kpi-unit">%</span></div>
+    </div>
+
+    <div class="bento-card span-3 kpi-card" style="--kpi-color:var(--accent-purple)">
+      <div class="bento-header">
+        <div><div class="bento-label">Resumes</div><div class="bento-title">Latest ATS</div></div>
+        <div class="bento-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+      </div>
+      <div class="kpi-value"><%= dashData.kpi.latestAtsScore !== null ? dashData.kpi.latestAtsScore : '—' %></div>
+    </div>
+
+    <div class="bento-card span-3 kpi-card" style="--kpi-color:var(--accent-orange)">
+      <div class="bento-header">
+        <div><div class="bento-label">Feedback</div><div class="bento-title">Avg Rating</div></div>
+        <div class="bento-icon"><i class="fa-solid fa-star-half-stroke"></i></div>
+      </div>
+      <div class="kpi-value"><%= dashData.kpi.avgSelfRating !== null ? dashData.kpi.avgSelfRating : '—' %><span class="kpi-unit">/10</span></div>
+    </div>
+
+    <!-- ── ROW 2: Radar span-4 + Timeline span-8 = 12 ── -->
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Strengths</div><div class="bento-title">Skill Radar</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="radarChart"></canvas></div>
+    </div>
+
+    <div class="bento-card span-8">
+      <div class="bento-header">
+        <div><div class="bento-label">Activity</div><div class="bento-title">Interview Timeline</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="timelineChart"></canvas></div>
+    </div>
+
+    <!-- ── ROW 3: Outcomes span-4 + ATS span-4 + Missing Skills span-4 = 12 ── -->
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Results</div><div class="bento-title">Outcomes</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="donutChart"></canvas></div>
+    </div>
+
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Improvement</div><div class="bento-title">ATS Progression</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="atsChart"></canvas></div>
+    </div>
+
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Gaps</div><div class="bento-title">Top Missing Skills</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="skillsChart"></canvas></div>
+    </div>
+
+    <!-- ── ROW 4: Perf by Type span-4 + Nervousness span-4 + Soft Skills span-4 = 12 ── -->
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Breakdown</div><div class="bento-title">Performance by Type</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="typeChart"></canvas></div>
+    </div>
+
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Correlation</div><div class="bento-title">Nervousness vs Prep</div></div>
+      </div>
+      <div class="chart-wrapper"><canvas id="scatterChart"></canvas></div>
+    </div>
+
+    <div class="bento-card span-4">
+      <div class="bento-header">
+        <div><div class="bento-label">Behavioural</div><div class="bento-title">Soft Skills Tracker</div></div>
+      </div>
+      <% const ss = dashData.softSkills; const ssTotal = ss.total || 1; %>
+      <div class="soft-skills-list">
+        <div class="ss-item">
+          <div class="ss-header">
+            <span><i class="fa-solid fa-star" style="color:var(--accent-blue)"></i> Used STAR Method</span>
+            <span><%= Math.round(ss.usedStar/ssTotal*100) %>%</span>
+          </div>
+          <div class="ss-track"><div class="ss-fill" style="width:<%= Math.round(ss.usedStar/ssTotal*100) %>%;background:var(--accent-blue)"></div></div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-header">
+            <span><i class="fa-solid fa-comment-dots" style="color:var(--accent-green)"></i> Explained Clearly</span>
+            <span><%= Math.round(ss.explainedClearly/ssTotal*100) %>%</span>
+          </div>
+          <div class="ss-track"><div class="ss-fill" style="width:<%= Math.round(ss.explainedClearly/ssTotal*100) %>%;background:var(--accent-green)"></div></div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-header">
+            <span><i class="fa-solid fa-lightbulb" style="color:var(--accent-purple)"></i> Real Examples</span>
+            <span><%= Math.round(ss.usedRealExamples/ssTotal*100) %>%</span>
+          </div>
+          <div class="ss-track"><div class="ss-fill" style="width:<%= Math.round(ss.usedRealExamples/ssTotal*100) %>%;background:var(--accent-purple)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ROW 5: Difficulty Table — span-12 ── -->
+    <div class="bento-card span-12">
+      <div class="bento-header">
+        <div><div class="bento-label">Analysis</div><div class="bento-title">Difficulty vs Success Rate</div></div>
+      </div>
+      <div class="table-responsive">
+        <table class="bento-table">
+          <thead><tr><th>Difficulty</th><th>Total</th><th>Selected</th><th>Success Rate</th></tr></thead>
+          <tbody>
+            <% if (!dashData.difficultyTable || dashData.difficultyTable.length === 0) { %>
+              <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px">No difficulty data yet</td></tr>
+            <% } else { %>
+              <% dashData.difficultyTable.forEach(row => { %>
+                <% const bc = row.difficulty==='Easy'?'badge-success':row.difficulty==='Hard'?'badge-danger':'badge-warning'; %>
+                <tr>
+                  <td><span class="badge <%= bc %>"><%= row.difficulty||'Unknown' %></span></td>
+                  <td><%= row.total %></td>
+                  <td><%= row.selected %></td>
+                  <td>
+                    <div class="rate-wrap">
+                      <div class="rate-track"><div class="rate-fill" style="width:<%= row.rate||0 %>%"></div></div>
+                      <span><%= row.rate||0 %>%</span>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ROW 6: Recent Interviews — span-12 ── -->
+    <div class="bento-card span-12">
+      <div class="bento-header">
+        <div><div class="bento-label">History</div><div class="bento-title">Recent Interviews</div></div>
+      </div>
+      <div class="table-responsive">
+        <table class="bento-table">
+          <thead><tr><th>Company</th><th>Role</th><th>Date</th><th>Type</th><th>Score</th><th>Outcome</th></tr></thead>
+          <tbody>
+            <% if (!dashData.recentInterviews || dashData.recentInterviews.length === 0) { %>
+              <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">No interviews logged yet</td></tr>
+            <% } else { %>
+              <% dashData.recentInterviews.forEach(iv => { %>
+                <% const bc2 = iv.outcome==='Selected'?'badge-success':iv.outcome==='Rejected'?'badge-danger':'badge-info'; %>
+                <tr>
+                  <td><strong><%= iv.companyName||'—' %></strong></td>
+                  <td><%= iv.jobTitle||'—' %></td>
+                  <td><%= iv.interviewDate ? new Date(iv.interviewDate).toLocaleDateString() : '—' %></td>
+                  <td><%= iv.interviewType||'—' %></td>
+                  <td><%= iv.performanceScore ? iv.performanceScore+'/100' : '—' %></td>
+                  <td><span class="badge <%= bc2 %>"><%= iv.outcome||'Awaiting' %></span></td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ROW 7: Support Tickets — span-12 ── -->
+    <div class="bento-card span-12">
+      <div class="bento-header">
+        <div><div class="bento-label">Support</div><div class="bento-title">Your Tickets</div></div>
+      </div>
+      <div class="table-responsive">
+        <table class="bento-table">
+          <thead><tr><th>Subject</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <% if (!dashData.tickets || dashData.tickets.length === 0) { %>
+              <tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px">No support tickets</td></tr>
+            <% } else { %>
+              <% dashData.tickets.forEach(t => { %>
+                <% const tb = (t.status==='Resolved'||t.status==='Closed')?'badge-success':'badge-info'; %>
+                <tr>
+                  <td><strong><%= t.subject %></strong></td>
+                  <td><%= new Date(t.createdAt).toLocaleDateString() %></td>
+                  <td><span class="badge <%= tb %>"><%= t.status %></span></td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /bento-grid -->
+
+  <% } %>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  window.DASH_DATA = <%- JSON.stringify(dashData) %>;
+</script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/scroll-animations.js"></script>
+<%- include('../partials/mainFooter') %>

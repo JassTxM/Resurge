@@ -1,0 +1,79 @@
+<%- include('../partials/authHeader', { title: 'Log In — Resurge' , bodyClass: 'login-page' , altAuthHref: '/signUp' ,
+    altAuthLabel: 'Sign Up' }) %>
+
+    <main style="padding-top:62px;">
+        <div class="auth-layout">
+
+            <div class="auth-left">
+                <div class="sb-orb sb-orb-1"></div>
+                <div class="sb-orb sb-orb-2"></div>
+                <div class="sb-inner">
+                    <div>
+                        <div class="sb-eyebrow">
+                            <div class="sb-dot"></div>Welcome Back
+                        </div>
+                        <h2 class="sb-heading">Pick up where<br>you left off.</h2>
+                        <p class="sb-desc">Access your detailed logs, review past feedback, and continue refining your
+                            interview strategy.</p>
+                    </div>
+                    <div>
+                        <div class="metric-card">
+                            <div class="metric-num" id="metricCount">0</div>
+                            <div class="metric-lbl">Interviews Analyzed</div>
+                            <div class="metric-badge">+42% improvement this month</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-cell">
+                                <div class="stat-v">96%</div>
+                                <div class="stat-l">Best Score</div>
+                            </div>
+                            <div class="stat-cell">
+                                <div class="stat-v">12k+</div>
+                                <div class="stat-l">Users</div>
+                            </div>
+                            <div class="stat-cell">
+                                <div class="stat-v">4.9 ★</div>
+                                <div class="stat-l">Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-right">
+                <div class="form-panel">
+                    <h1 class="form-title">Welcome back.</h1>
+                    <p class="form-lead">No account yet? <a href="/signUp">Create one free</a></p>
+                    <form id="loginForm" action="#">
+                        <div class="fields">
+                            <div class="s-in d1">
+                                <label class="fl-lbl" for="email">Email address</label>
+                                <div class="inp-wrap"><i class="fa-solid fa-envelope ico"></i><input type="email"
+                                        id="email" placeholder="you@example.com" autocomplete="email"></div>
+                            </div>
+                            <div class="s-in d2">
+                                <div class="fl-row"><label class="fl-lbl" for="password">Password</label><a href="/404"
+                                        class="forgot">Forgot password?</a></div>
+                                <div class="inp-wrap"><i class="fa-solid fa-lock ico"></i><input type="password"
+                                        id="password" placeholder="••••••••" autocomplete="current-password"></div>
+                            </div>
+                        </div>
+                        <button type="submit" id="loginSubmitBtn" class="btn-submit s-in d3">Log In &nbsp;<i
+                                class="fa-solid fa-arrow-right arrow"></i></button>
+                    </form>
+                    <div class="auth-div">
+                        <hr><span>or continue with</span>
+                        <hr>
+                    </div>
+                    <a href="/api/auth/google" id="googleLoginBtn" class="btn-google"
+                        style="text-decoration: none; text-align: center; display: block; box-sizing: border-box; line-height: 1.5rem;"><i
+                            class="fa-brands fa-google g-icon"></i> Continue with Google</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="/js/login.js"></script>
+
+    <%- include('../partials/authFooter') %>

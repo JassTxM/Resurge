@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Resurge' %></title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
+    <div id="cursor-ring"></div>
+    <nav class="rsg-nav">
+        <div class="rsg-nav-inner">
+            <a href="/" class="rsg-brand">RESURGE</a>
+            <div class="rsg-nav-links">
+                <a href="/" class="rsg-nav-link">Home</a>
+                <a href="/resumeScore" class="rsg-nav-link">Resume Score</a>
+                <a href="/interviewLog" class="rsg-nav-link">Interview Log</a>
+                <a href="/support" class="rsg-nav-link">Support</a>
+            </div>
+            <div class="rsg-nav-actions">
+                <% if (user) { %>
+                    <i class="fa-solid fa-user" style="font-size: 1.2rem; margin-right: 20px; color: var(--text-color);"></i>
+                    <a href="/api/auth/logout" class="rsg-btn rsg-btn-ghost rsg-btn-nav-ghost" style="color: var(--accent-red); border-color: var(--accent-red);">Log Out</a>
+                <% } else { %>
+                    <a href="<%= typeof altAuthHref !== 'undefined' ? altAuthHref : '/signUp' %>" class="rsg-btn rsg-btn-nav-sm"><%= typeof altAuthLabel !== 'undefined' ? altAuthLabel : 'Sign Up' %></a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
