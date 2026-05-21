@@ -16,8 +16,8 @@ const runInterviewEngine = (interviewData) => {
         let errorString = '';
 
         const jsonArg = JSON.stringify(interviewData);
-
-        const pythonProcess = spawn('py', [SCRIPT_PATH, jsonArg]);
+        
+        const pythonProcess = spawn('python3', [SCRIPT_PATH, jsonArg]);
 
         pythonProcess.stdout.on('data', (data) => {
             dataString += data.toString();

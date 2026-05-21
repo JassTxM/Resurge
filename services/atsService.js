@@ -11,8 +11,8 @@ const runAtsEngine = (resumePath, jobDescription = '') => {
     return new Promise((resolve, reject) => {
         let dataString = '';
         let errorString = '';
-
-        const pythonProcess = spawn('py', [SCRIPT_PATH, resumePath, jobDescription]);
+        
+       const pythonProcess = spawn('python3', [SCRIPT_PATH, resumePath, jobDescription]);
 
         pythonProcess.stdout.on('data', (data) => {
             dataString += data.toString();
