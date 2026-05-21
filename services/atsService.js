@@ -12,7 +12,8 @@ const runAtsEngine = (resumePath, jobDescription = '') => {
         let dataString = '';
         let errorString = '';
 
-        const pythonProcess = spawn('python3', [SCRIPT_PATH, resumePath, jobDescription]);
+        const pythonCmd = process.platform === 'win32' ? 'py' : 'python3';
+        const pythonProcess = spawn(pythonCmd, [SCRIPT_PATH, resumePath, jobDescription]);
 
         pythonProcess.stdout.on('data', (data) => {
             dataString += data.toString();

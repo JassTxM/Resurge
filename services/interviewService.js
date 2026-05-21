@@ -17,7 +17,8 @@ const runInterviewEngine = (interviewData) => {
 
         const jsonArg = JSON.stringify(interviewData);
 
-        const pythonProcess = spawn('python3', [SCRIPT_PATH, jsonArg]);
+        const pythonCmd = process.platform === 'win32' ? 'py' : 'python3';
+        const pythonProcess = spawn(pythonCmd, [SCRIPT_PATH, jsonArg]);
 
         pythonProcess.stdout.on('data', (data) => {
             dataString += data.toString();
